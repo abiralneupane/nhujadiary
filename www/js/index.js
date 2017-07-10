@@ -57,7 +57,9 @@ var app = {
 
         let ptrContent = $$('.pull-to-refresh-content');
         ptrContent.on('ptr:refresh', function (e) {
+            console.log("Refresh");
             self.__fetchPlaylist($$, function(){
+                console.log("Fetched");
                 nhujaApp.pullToRefreshDone(ptrContent);
             });
         });
@@ -181,13 +183,13 @@ var app = {
     },
 
     __fetchPlaylist: function($$, callback){
-         DB.getPlaylists(function(tx, playlists){
-            let playList = [];
+        let playList = [];
 
-            if( typeof callback == "undefined" ){
-                var callback = function(){}
-            }
-            
+        if( typeof callback == "undefined" ){
+            var callback = function(){}
+        }
+
+        DB.getPlaylists(function(tx, playlists){
             if(typeof playlists.rows != "undefined"  && playlists.rows.length > 0){
                 
                 for(let i=0; i<playlists.rows.length; i++){

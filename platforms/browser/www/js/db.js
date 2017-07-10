@@ -25,8 +25,8 @@ var DB = {
 
 	populateDB: function(tx){
 
-        /*tx.executeSql( 'DROP TABLE playlist' );
-        tx.executeSql( 'DROP TABLE songs' );*/
+        //tx.executeSql( 'DROP TABLE playlist' );
+        // tx.executeSql( 'DROP TABLE songs' );
         
         tx.executeSql( 'CREATE TABLE IF NOT EXISTS playlist ( \
         	id INTEGER PRIMARY KEY AUTOINCREMENT, \
