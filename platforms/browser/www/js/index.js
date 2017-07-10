@@ -53,17 +53,48 @@ var app = {
         DB.init();
 
         console.log("This is index page");
-        
-        /*DB.getPlaylists(function(tx, playlists){
-            console.log("This is index page inside db");
-        });*/
+        self.__fetchPlaylist($$);
+
+        let ptrContent = $$('.pull-to-refresh-content');
+        ptrContent.on('ptr:refresh', function (e) {
+            self.__fetchPlaylist($$, function(){
+                nhujaApp.pullToRefreshDone(ptrContent);
+            });
+        });
+
+
+        $$('.popup-playlist').on('popup:open', function () {
+            let songSelector = $$('#song-selector').html();
+            let compiledTemplate = Template7.compile(songSelector);
+            let songsObject = { songs: [] };
+
+            DB.getSong(function(tx, songs){
+                if(typeof songs.rows != "undefined"  && songs.rows.length > 0){
+
+                    for(let i=0; i<songs.rows.length; i++){
+                        songsObject.songs.push(songs.rows[i]);
+                    }
+
+                    let html = compiledTemplate(songsObject);
+                    $$('.lyrics-select').html(html);
+                }
+            });
+        });
 
         $$('form.ajax-submit').on('submitted', function (e) {
-            var data = e.detail.data;
-            var title = $$('input[name=title]').val();
-            var songs = $$('select[name=songs]').val();
-            var songList = songs.split(",");
+            let data = e.detail.data;
+            let t = $$('input[name=title]').val();
+            let s = $$('select[name=songs]').val();
 
+            
+
+            DB.savePlaylists({title: t, songs: JSON.stringify(s)}, function(tx, playlists){
+                nhujaApp.alert("Playlist saved to database", "Successfully Saved", function(){
+                    console.log(playlists);
+                    nhujaApp.closeModal('.popup-playlist');
+                    nhujaApp.pullToRefreshTrigger('.pull-to-refresh-content');
+                });
+            });
         });
 
         nhujaApp.onPageInit('songs', function (page) {            
@@ -149,30 +180,70 @@ var app = {
         });
     },
 
+    __fetchPlaylist: function($$, callback){
+         DB.getPlaylists(function(tx, playlists){
+            let playList = [];
+
+            if( typeof callback == "undefined" ){
+                var callback = function(){}
+            }
+            
+            if(typeof playlists.rows != "undefined"  && playlists.rows.length > 0){
+                
+                for(let i=0; i<playlists.rows.length; i++){
+                    
+                    let temp = {
+                        id: playlists.rows[i].id,
+                        title: playlists.rows[i].title,
+                        song: JSON.stringify(playlists.rows[i].songs)
+                    };
+
+                    playList.push(temp);
+                }
+            }
+
+            let playlistTemplate = $$('#playlist-template').html();
+            let compiledTemplate = Template7.compile(playlistTemplate);
+            let html = '';
+
+            if(playList.length > 0 ){
+                html = compiledTemplate({ playlist: playList });
+            }else{
+                html = compiledTemplate([]);
+            }
+            
+            $$('.playlist-block').html(html);
+
+            callback();
+        });
+    },
+
     __fetchSongs: function($$, callback){
         if( typeof callback == "undefined" ){
             var callback = function(){}
         }
 
         let songsObject = { songs: [] };
-
+        let html = "";
         DB.getSong(function(tx, songs){
             if(typeof songs.rows != "undefined"  && songs.rows.length > 0){
-                
-                let html = "";
                 
                 for(let i=0; i<songs.rows.length; i++){
                     songsObject.songs.push(songs.rows[i]);
                 }
-
-                var compiledTemplate = Template7.compile($$('#songListTemplate').html());
-                html = compiledTemplate(songsObject);
-
-                $$('.page-content .main-content').html(html);
-            }else{
-                $$('.content-block.notice > span').text('No songs found in database');
-                $$('.content-block.notice').removeClass('hidden');
             }
+            
+            let template = $$('#songListTemplate').html();
+            let compiledTemplate = Template7.compile(template);
+            let html = '';
+            
+            if(songsObject.songs.length > 0 ){
+                html = compiledTemplate(songsObject);
+            }else{
+                html = compiledTemplate([]);
+            }
+
+            $$('.page-content .main-content').html(html);
 
             callback();
         });

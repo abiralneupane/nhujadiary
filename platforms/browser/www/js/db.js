@@ -50,19 +50,17 @@ var DB = {
     getPlaylists: function(cb){
     	var self = this;
     	self.db.transaction( function(tx){
-    		tx.executeSql( 'SELECT * FROM playlist_song', [], cb, self.errorCB );
+    		tx.executeSql( 'SELECT * FROM playlist', [], cb, self.errorCB );
     	}, self.errorCB, function(tx){});
-
-    	/*self.db.transaction( function(tx){
-    		tx.executeSql('SELECT * FROM playlist_song',[],function(tx,result){
-    		console.log("Result");
-    		console.log(result);
-    	},self.errorCB);
-    	}, self.errorCB, function(tx){});*/
     },
 
-    savePlaylists: function(){
-
+    savePlaylists: function(playlistData, cb){
+        var self = this;
+        
+        self.db.transaction( function(tx){
+            let query = "INSERT INTO playlist(title, songs) VALUES ( '"+playlistData.title+"', '"+playlistData.songs+"')";
+            tx.executeSql(query, [], cb, self.errorCB );
+        }, self.errorCB, function(tx){});
     },
 
     updatePlaylists: function(){
@@ -84,7 +82,6 @@ var DB = {
             tx.executeSql( 'DELETE FROM songs' );
             let query = "INSERT INTO songs(name, album, artist, base_chord, lyrics, lang ) VALUES "+lyricsData;
             tx.executeSql(query, [], cb, self.errorCB );
-            console.log("After error");
         }, self.errorCB, function(tx){});
         
     },

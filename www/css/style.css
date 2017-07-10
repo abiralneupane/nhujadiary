@@ -3,6 +3,11 @@
     color:#fff;
 }
 
+.content-block.notice a {
+    color: #fff;
+    text-decoration: underline;
+}
+
 a.back.link, a.back.link .icon {
     color: #fff;
 }

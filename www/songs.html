@@ -12,7 +12,7 @@
   <!-- Page, data-page contains page name-->
   	<div data-page="songs" class="page">
 	    <!-- Scrollable page content-->
-	    <div class="page-content pull-to-refresh-content" data-ptr-distance="55"">
+	    <div class="page-content pull-to-refresh-content" data-ptr-distance="55">
 
 	    	<div class="pull-to-refresh-layer">
 		    	<div class="preloader"></div>
@@ -21,9 +21,11 @@
 
 	    	<div class="content-block-title">All Songs</div>
 	    	
-	    	<div class="content-block notice hidden"><i class="f7-icons size-16 icon-white">info</i> <span></span></div>
 	    	<div class="main-content"></div>
-	    	<script id="songListTemplate" type="text/template7">
+	    </div>
+
+	    <script id="songListTemplate" type="text/template7">
+			{{#if songs}}
 		    	<div class="data-table card song-list">
 					<table>
 				    	<thead>
@@ -55,46 +57,52 @@
 				    	</tbody>
 				  	</table>
 				</div>
-			</script>
+			 {{else}}
+		        <div class="content-block notice">
+		            <i class="f7-icons size-16 icon-white">info</i> 
+		            <span>You don't have any songs. Lets pull it from server by clicking button on top right corner of screen</span>
+		        </div>
+		    {{/if}}
+		</script>
 
-			<script id="popup-lyrics" type="text/template7">
-				<div class="popup">
-					<div class="heading">
-						<div class="blocks">
-							<h3 class="song-head">{{name}}</h3>
-							<div class="song-meta">
-								<div class="chip scale">
-									<div class="chip-label">
-										<i class="f7-icons size-16">tune</i> {{scale}}
-									</div>
+		<script id="popup-lyrics" type="text/template7">
+			<div class="popup">
+				<div class="heading">
+					<div class="blocks">
+						<h3 class="song-head">{{name}}</h3>
+						<div class="song-meta">
+							<div class="chip scale">
+								<div class="chip-label">
+									<i class="f7-icons size-16">tune</i> {{scale}}
 								</div>
+							</div>
 
-								<div class="chip scale">
-									<div class="chip-label">
-										<i class="f7-icons size-16">world</i> {{lang}}
-									</div>
+							<div class="chip scale">
+								<div class="chip-label">
+									<i class="f7-icons size-16">world</i> {{lang}}
 								</div>
+							</div>
 
-								<div class="chip scale">
-									<div class="chip-label">
-										<i class="f7-icons size-16">mic_fill</i> {{artist}}
-									</div>
+							<div class="chip scale">
+								<div class="chip-label">
+									<i class="f7-icons size-16">mic_fill</i> {{artist}}
 								</div>
+							</div>
 
-								<div class="chip scale">
-									<div class="chip-label">
-										<i class="f7-icons size-16">albums</i> {{album}}
-									</div>
+							<div class="chip scale">
+								<div class="chip-label">
+									<i class="f7-icons size-16">albums</i> {{album}}
 								</div>
 							</div>
 						</div>
-						
-						<div class="blocks close"><a href="#" class="close-popup close-lyrics"><i class="f7-icons icon-white" style="font-weight: 900;" >close_round</i></a></div>
 					</div>
-
-				    <div class="content-block lyrics-block">{{lyrics}}</div>
+					
+					<div class="blocks close"><a href="#" class="close-popup close-lyrics"><i class="f7-icons icon-white" style="font-weight: 900;" >close_round</i></a></div>
 				</div>
-			</script>
-	    </div>      	
+
+			    <div class="content-block lyrics-block">{{lyrics}}</div>
+			</div>
+		</script>
+
   	</div>
 </div>
