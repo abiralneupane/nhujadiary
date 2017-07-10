@@ -33,7 +33,11 @@ a.back.link, a.back.link .icon {
 
 
 .popup .blocks.close {
-    float:right;
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    bottom: 0;
+    z-index: 2;
 }
 
 .popup .heading {
@@ -44,6 +48,8 @@ a.back.link, a.back.link .icon {
 }
 
 .popup .heading .song-head{
+	position: relative;
+	z-index:1;
 	margin: 0;
 }
 

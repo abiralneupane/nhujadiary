@@ -81,11 +81,11 @@ var app = {
 
             $$(document).on('click','.open-lyrics', function () {
                 let target = $$(this).parent();
-                let album = target.find('[name=album]').val();
-                let lang = target.find('[name=lang]').val();
+                let album = target.find('[name=album]').val().replace(/\\/g, '');
+                let lang = target.find('[name=lang]').val().replace(/\\/g, '');
 
-                if(album){
-                    album = "( "+album+" )";
+                if(!album){
+                    album = "N/A";
                 }
 
                 if( lang == "English" ){
@@ -99,12 +99,12 @@ var app = {
                 }
 
                 let context = {
-                    name: target.find('[name=name]').val(),
-                    artist: target.find('[name=artist]').val(),
+                    name: target.find('[name=name]').val().replace(/\\/g, ''),
+                    artist: target.find('[name=artist]').val().replace(/\\/g, ''),
                     album: album,
                     scale: target.find('[name=scale]').val(),
                     lang: lang,
-                    lyrics: target.find('[name=lyrics]').val()
+                    lyrics: target.find('[name=lyrics]').val().replace(/\\/g, '')
                 }
                 let popupHTML = $$('#popup-lyrics').html();
                 let compiledTemplate = Template7.compile(popupHTML);
@@ -129,7 +129,7 @@ var app = {
                             var SQLString = "";
 
                             for( let i=0; i<lyrics.length; i++ ){
-                                SQLString += "( '"+lyrics[i].name+"', '"+lyrics[i].album+"', '"+lyrics[i].artist+"', '"+lyrics[i].base_chord+"', '"+lyrics[i].lyrics+"', '"+lyrics[i].lang+"' )";
+                                SQLString += '( "'+lyrics[i].name+'", "'+lyrics[i].album+'", "'+lyrics[i].artist+'", "'+lyrics[i].base_chord+'", "'+lyrics[i].lyrics+'", "'+lyrics[i].lang+'" )';
                                 
                                 if( lyrics.length > 1 && i != lyrics.length-1 ){
                                     SQLString += ', ';

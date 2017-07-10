@@ -82,13 +82,14 @@ var DB = {
         
         self.db.transaction( function(tx){
             tx.executeSql( 'DELETE FROM songs' );
-            let query = 'INSERT INTO songs(name, album, artist, base_chord, lyrics, lang ) VALUES '+lyricsData;
+            let query = "INSERT INTO songs(name, album, artist, base_chord, lyrics, lang ) VALUES "+lyricsData;
             tx.executeSql(query, [], cb, self.errorCB );
+            console.log("After error");
         }, self.errorCB, function(tx){});
         
     },
 
     errorCB: function(err) {
-        console.error("Error processing SQL: ", err.message);
+        console.error("Error processing SQL: ", err);
     }
 };
