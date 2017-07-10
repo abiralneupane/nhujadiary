@@ -1,0 +1,17 @@
+[{
+	"name": "Test Song",
+	"album": "Test Album",
+	"artist": "Test Artist",
+	"base_chord":  "G Major",
+	"lyrics": "Hello Dude",
+	"lang": "Nepali"
+},
+{
+	"name": "Test Song 2",
+	"album": "Test Album 2",
+	"artist": "Test Artist 2",
+	"base_chord":  "G Major 2",
+	"lyrics": "Hello Dude 2",
+	"lang": "English"
+}
+]

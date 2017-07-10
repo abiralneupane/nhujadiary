@@ -1,0 +1,88 @@
+
+<!-- We don't need full layout here, because this page will be parsed with Ajax-->
+<!-- Top Navbar-->
+<div class="navbar">
+  <div class="navbar-inner">
+    <div class="left"><a href="#" class="back link"> <i class="f7-icons size-16 icon-white">left</i><span>Back</span></a></div>
+    <div class="center sliding">All Songs</div>
+    <div class="right"><a href="#" class="pull-lyrics"><i class="f7-icons size-16 icon-white">reload_round</i></a></div>
+  </div>
+</div>
+<div class="pages">
+  <!-- Page, data-page contains page name-->
+  	<div data-page="songs" class="page">
+	    <!-- Scrollable page content-->
+	    <div class="page-content pull-to-refresh-content" data-ptr-distance="55"">
+
+	    	<div class="pull-to-refresh-layer">
+		    	<div class="preloader"></div>
+		      	<div class="pull-to-refresh-arrow"></div>
+		    </div>
+
+	    	<div class="content-block-title">All Songs</div>
+	    	
+	    	<div class="content-block notice hidden"><i class="f7-icons size-16 icon-white">info</i> <span></span></div>
+	    	<div class="main-content"></div>
+	    	<script id="songListTemplate" type="text/template7">
+		    	<div class="data-table card song-list">
+					<table>
+				    	<thead>
+				      		<tr>
+				        		<th class="numeric-cell">#</th>
+				        		<th class="label-cell">Title</th>
+				        		<th>Scale</th>
+				        		<th>Lang</th>
+				      		</tr>
+				    	</thead>
+				    	<tbody>
+				    		{{#each songs}}
+				      		<tr>
+				        		<td class="numeric-cell" >{{id}}</td>
+				        		<td class="label-cell" >
+				        			<input type="hidden" name="name" value="{{name}}" />
+				        			<input type="hidden" name="artist" value="{{artist}}" />
+				        			<input type="hidden" name="album" value="{{album}}" />
+				        			<input type="hidden" name="scale" value="{{base_chord}}" />
+				        			<input type="hidden" name="lyrics" value="{{lyrics}}" />
+				        			<input type="hidden" name="lang" value="{{lang}}" />
+
+				        			<a href="#" class="open-lyrics">{{name}}</a>
+				        		</td>
+				        		<td>{{base_chord}}</td>
+				        		<td>{{lang}}</td>
+				      		</tr>
+				      		{{/each}}
+				    	</tbody>
+				  	</table>
+				</div>
+			</script>
+
+			<script id="popup-lyrics" type="text/template7">
+				<div class="popup">
+					<div class="heading">
+						<div class="blocks">
+							<h3 class="song-head">{{name}} - {{artist}} {{album}}</h3>
+							<div class="song-meta">
+								<div class="chip scale">
+									<div class="chip-label">
+										<i class="f7-icons size-16">mic_fill</i> {{scale}}
+									</div>
+								</div>
+
+								<div class="chip scale">
+									<div class="chip-label">
+										<i class="f7-icons size-16">world</i> {{lang}}
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="blocks close"><a href="#" class="close-popup close-lyrics"><i class="f7-icons size-16 icon-white" style="font-weight: 900;" >close_round</i></a></div>
+					</div>
+
+				    <div class="content-block lyrics-block">{{lyrics}}</div>
+				</div>
+			</script>
+	    </div>      	
+  	</div>
+</div>

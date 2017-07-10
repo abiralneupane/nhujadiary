@@ -1,0 +1,57 @@
+.navbar { 
+    background-color: #324b5f;
+    color:#fff;
+}
+
+a.back.link, a.back.link .icon {
+    color: #fff;
+}
+
+.hidden{
+    display: none !important;
+}
+
+.size-16 { font-size:16px; }
+
+.icon-white { color: #fff; }
+
+.content-block.notice {
+    background-color: #7b8e9c;
+    padding: 10px;
+    margin-top: 15px;
+    color: #fff;
+}
+
+.song-list a {
+	color:#000;
+	text-decoration: underline;
+}
+
+.popup .blocks {
+    display: inline-block;
+}
+
+
+.popup .blocks.close {
+    float:right;
+}
+
+.popup .heading {
+    padding: 10px 10px 0;
+    text-align: left;
+    background: #5d5684;
+    color: #fff;
+}
+
+.popup .heading .song-head{
+	margin: 0;
+}
+
+.popup .heading .song-meta{
+	margin: 7px 0;
+}
+
+.popup .lyrics-block{
+	margin-top: 10px;
+	overflow-y: scroll;
+}
