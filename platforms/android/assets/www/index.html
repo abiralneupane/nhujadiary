@@ -10,9 +10,9 @@
     <!-- Your app title -->
     <title>Nhuja Diary</title>
     <!-- Path to Framework7 Library CSS, Material Theme -->
-    <link rel="stylesheet" href="css/framework7.ios.min.css" />
+    <link rel="stylesheet" href="css/framework7.material.min.css" />
     <!-- Path to Framework7 color related styles, Material Theme -->
-    <link rel="stylesheet" href="css/framework7.ios.colors.min.css" />
+    <link rel="stylesheet" href="css/framework7.material.colors.min.css" />
     <link rel="stylesheet" href="css/framework7-icons.css" />
     <!-- Path to your custom app styles-->
     <link rel="stylesheet" type="text/css" href="css/style.css" />
@@ -26,10 +26,10 @@
         <!-- Your main view, should have "view-main" class-->
         <div class="view view-main">
             <!-- Top Navbar-->
-            <div class="navbar">
+            <div class="navbar main-nav">
                 <div class="navbar-inner">
                     <!-- We have home navbar without left link-->
-                    <div class="center sliding">Nhuja Diary</div>
+                    <div class="center sliding"  style="text-align: center;width: 100%;" >Nhuja Diary</div>
                 </div>
             </div>
 
@@ -102,7 +102,7 @@
     </div>
 
 
-    <script type="text/template7" id="song-selector" >
+    <script id="song-selector" type="text/template7" >
         <div class="item-input">
             <select name="songs" multiple >
                 {{#each songs}}
@@ -112,13 +112,13 @@
         </div>
     </script>
 
-    <script type="text/template7" id="playlist-template" >
+    <script id="playlist-template" type="text/template7" >
         {{#if playlist}}
             <div class="list-block">
                 <ul>
                     {{#each playlist}}
                         <li>
-                            <a href="my_playlists.html" class="item-link">
+                            <a href="my_playlists.html?playlist_id={{id}}" class="item-link">
                                 <div class="item-content">
                                     <div class="item-inner"> 
                                         <div class="item-title">{{title}}</div>
@@ -135,10 +135,87 @@
                 <span>You don't have any playlist. Start by <a href="#" data-popup=".popup-playlist" class="open-popup" >adding one</a></span>
             </div>
         {{/if}}  
-
     </script>
-    
-    
+
+    <script id="songListTemplate" type="text/template7">
+        {{#if songs}}
+            <div class="data-table card song-list">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="numeric-cell">#</th>
+                            <th class="label-cell">Title</th>
+                            <th>Scale</th>
+                            <th>Lang</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each songs}}
+                        <tr>
+                            <td class="numeric-cell" >{{@index+1}}</td>
+                            <td class="label-cell" >
+                                <input type="hidden" name="name" value="{{name}}" />
+                                <input type="hidden" name="artist" value="{{artist}}" />
+                                <input type="hidden" name="album" value="{{album}}" />
+                                <input type="hidden" name="scale" value="{{base_chord}}" />
+                                <input type="hidden" name="lyrics" value="{{lyrics}}" />
+                                <input type="hidden" name="lang" value="{{lang}}" />
+
+                                <a href="#" class="open-lyrics">{{name}}</a>
+                            </td>
+                            <td>{{base_chord}}</td>
+                            <td>{{lang}}</td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        {{else}}
+            <div class="content-block notice">
+                <i class="f7-icons size-16 icon-white">info</i> 
+                <span>You don't have any songs. Lets pull it from server by clicking button on top right corner of screen</span>
+            </div>
+        {{/if}}
+    </script>
+
+    <script id="popup-lyrics" type="text/template7">
+        <div class="popup">
+            <div class="heading">
+                <div class="blocks">
+                    <h3 class="song-head">{{name}}</h3>
+                    <div class="song-meta">
+                        <div class="chip scale">
+                            <div class="chip-label">
+                                <i class="f7-icons size-16">tune</i> {{scale}}
+                            </div>
+                        </div>
+
+                        <div class="chip scale">
+                            <div class="chip-label">
+                                <i class="f7-icons size-16">world</i> {{lang}}
+                            </div>
+                        </div>
+
+                        <div class="chip scale">
+                            <div class="chip-label">
+                                <i class="f7-icons size-16">mic_fill</i> {{artist}}
+                            </div>
+                        </div>
+
+                        <div class="chip scale">
+                            <div class="chip-label">
+                                <i class="f7-icons size-16">albums</i> {{album}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="blocks close"><a href="#" class="close-popup close-lyrics"><i class="f7-icons icon-white" style="font-weight: 900;" >close_round</i></a></div>
+            </div>
+
+            <div class="content-block lyrics-block">{{lyrics}}</div>
+        </div>
+    </script>
 
 
     <!-- Path to Framework7 Library JS-->

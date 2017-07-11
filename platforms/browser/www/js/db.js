@@ -54,6 +54,42 @@ var DB = {
     	}, self.errorCB, function(tx){});
     },
 
+    getPlaylist: function(id, cb){
+        var self = this;
+        let playlistObj = {
+            id: 0,
+            title: '',
+            songs: []
+        };
+        self.db.transaction( function(tx){
+            tx.executeSql( 'SELECT * FROM playlist WHERE id='+id, [], function(tx, playlist){
+                let row = playlist.rows[0];
+                playlistObj.id = row.id;
+                playlistObj.title = row.title;
+
+                let songs = JSON.parse(row.songs);
+
+                if(songs.length > 0 ){
+                    let songQueryPart = '';
+                    for(var i=0; i<songs.length; i++){
+                        songQueryPart += 'id = '+songs[i];
+                        if( i < songs.length - 1 ){
+                            songQueryPart += ' OR ';
+                        }
+                    }
+                    
+                    tx.executeSql( 'SELECT * FROM songs WHERE '+songQueryPart, [], function(tx, songs){
+                        playlistObj.songs = songs.rows;
+
+                        cb(playlistObj);
+
+                    }, self.errorCB );
+
+                }
+            }, self.errorCB );
+        }, self.errorCB, function(tx){});
+    },
+
     savePlaylists: function(playlistData, cb){
         var self = this;
         

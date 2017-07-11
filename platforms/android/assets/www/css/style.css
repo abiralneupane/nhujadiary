@@ -20,6 +20,15 @@ a.back.link, a.back.link .icon {
 
 .icon-white { color: #fff; }
 
+a.button, input[type=submit] {
+    border: 1px solid;
+}
+
+.content-block-title{
+    font-size: 18px;
+    line-height: 20px;
+}
+
 .content-block.notice {
     background-color: #7b8e9c;
     padding: 10px;
@@ -30,6 +39,14 @@ a.back.link, a.back.link .icon {
 .song-list a {
 	color:#000;
 	text-decoration: underline;
+}
+
+.pull-lyrics-wrapper{
+    position: absolute;
+    top: 10px;
+    bottom: 11px;
+    right: 0;
+    left: 92%;
 }
 
 .popup .blocks {
@@ -60,6 +77,10 @@ a.back.link, a.back.link .icon {
 
 .popup .heading .song-meta{
 	margin: 7px 0;
+}
+
+.song-meta .chip-label {
+    color: #fff;
 }
 
 .popup .lyrics-block{
