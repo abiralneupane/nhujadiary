@@ -191,7 +191,7 @@ var app = {
         });
 
         $$(document).on('click','.open-lyrics', function () {
-            let target = $$(this).parent();
+            let target = $$(this);
             let album = target.find('[name=album]').val().replace(/\\/g, '');
             let lang = target.find('[name=lang]').val().replace(/\\/g, '');
 
