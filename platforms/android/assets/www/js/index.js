@@ -39,47 +39,12 @@ var app = {
 
         let ptrContent = $$('.pull-to-refresh-content');
         ptrContent.on('ptr:refresh', function (e) {
-            console.log("Refresh");
             self.__fetchPlaylist($$, function(){
-                console.log("Fetched");
                 nhujaApp.pullToRefreshDone(ptrContent);
             });
         });
 
-
-        $$('.popup-playlist').on('popup:open', function () {
-            let songSelector = $$('#song-selector').html();
-            let compiledTemplate = Template7.compile(songSelector);
-            let songsObject = { songs: [] };
-
-            DB.getSong(function(tx, songs){
-                if(typeof songs.rows != "undefined"  && songs.rows.length > 0){
-
-                    for(let i=0; i<songs.rows.length; i++){
-                        songsObject.songs.push(songs.rows[i]);
-                    }
-
-                    let html = compiledTemplate(songsObject);
-                    $$('.lyrics-select').html(html);
-                }
-            });
-        });
-
-        $$('form.ajax-submit').on('submitted', function (e) {
-            let data = e.detail.data;
-            let t = $$('input[name=title]').val();
-            let s = $$('select[name=songs]').val();
-
-            
-
-            DB.savePlaylists({title: t, songs: JSON.stringify(s)}, function(tx, playlists){
-                nhujaApp.alert("Playlist saved to database", "Successfully Saved", function(){
-                    console.log(playlists);
-                    nhujaApp.closeModal('.popup-playlist');
-                    nhujaApp.pullToRefreshTrigger('.pull-to-refresh-content');
-                });
-            });
-        });
+        Template7.registerPartial( 'songsLoop', $$('#songsLoop').html() );
 
         nhujaApp.onPageInit('songs', function (page) {
             let self = app;
@@ -92,40 +57,6 @@ var app = {
                 self.__fetchSongs($$, function(){
                     nhujaApp.pullToRefreshDone(ptrContent);
                 });
-            });
-
-            $$(document).on('click','.open-lyrics', function () {
-                let target = $$(this).parent();
-                let album = target.find('[name=album]').val().replace(/\\/g, '');
-                let lang = target.find('[name=lang]').val().replace(/\\/g, '');
-
-                if(!album){
-                    album = "N/A";
-                }
-
-                if( lang == "English" ){
-                    lang = "EN";
-                }else if( lang == "Hindi" ){
-                    lang = "IN";
-                }else if( lang == "Nepali" ){
-                    lang = "NE";
-                }else{
-                    lang = "";
-                }
-
-                let context = {
-                    name: target.find('[name=name]').val().replace(/\\/g, ''),
-                    artist: target.find('[name=artist]').val().replace(/\\/g, ''),
-                    album: album,
-                    scale: target.find('[name=scale]').val(),
-                    lang: lang,
-                    lyrics: target.find('[name=lyrics]').val().replace(/\\/g, '')
-                }
-                let popupHTML = $$('#popup-lyrics').html();
-                let compiledTemplate = Template7.compile(popupHTML);
-                let html = compiledTemplate(context);
-
-                nhujaApp.popup(html);
             });
 
             $$('.pull-lyrics').on('click', function(e){
@@ -165,11 +96,132 @@ var app = {
         nhujaApp.onPageInit('myplaylist', function (page) {
             let self = app;
             let id = page.query.playlist_id;
+            let playlistObj = {
+                id: '',
+                title: '',
+                songs:{
+                    en: {
+                        lang: 'English',
+                        songs: []
+                    },
+                    in: {
+                        lang: "Hindi",
+                        songs: []
+                    },
+                    ne: {
+                        lang: "Nepali",
+                        songs: []
+                    },
+
+                    total:0
+                }
+            };
 
             DB.getPlaylist(id, function(playlist){
-                console.log(playlist);
+                playlistObj.id = playlist.id;
+                playlistObj.title = playlist.title;
+
+                if( typeof playlist.songs != "undefined" && playlist.songs.length > 0 ){
+                    for(let i = 0; i< playlist.songs.length; i++ ){
+                        
+                        if( playlist.songs[i].lang == "English" ){
+                            playlistObj.songs.en.songs.push(playlist.songs[i]);
+                        }else if( playlist.songs[i].lang == "Hindi" ){
+                            playlistObj.songs.in.songs.push(playlist.songs[i]);
+                        }else if( playlist.songs[i].lang == "Nepali" ){
+                            playlistObj.songs.ne.songs.push(playlist.songs[i]);
+                        }
+
+                        playlistObj.songs.total++;
+                    }
+                }
+
+                if( playlistObj.songs.en.songs.length == 0 ){
+                    delete playlistObj.songs.en;
+                }
+
+                if( playlistObj.songs.in.songs.length == 0 ){
+                     delete playlistObj.songs.in;
+                }
+
+                if( playlistObj.songs.ne.songs.length == 0 ){
+                   delete playlistObj.songs.ne
+                }
+
+                console.log(playlistObj);
+                let myPlaylistTemplate = $$('#myplaylist-template').html();
+                let compiledTemplate = Template7.compile(myPlaylistTemplate);
+                let html = compiledTemplate({ playlist: playlistObj });
+                $$('.playlist-view').html(html);
             });
+        });
+
+        $$('.popup-playlist').on('popup:open', function () {
+            let songSelector = $$('#song-selector').html();
+            let compiledTemplate = Template7.compile(songSelector);
+            let songsObject = { songs: [] };
+
+            DB.getSong(function(tx, songs){
+                if(typeof songs.rows != "undefined"  && songs.rows.length > 0){
+
+                    for(let i=0; i<songs.rows.length; i++){
+                        songsObject.songs.push(songs.rows[i]);
+                    }
+
+                    let html = compiledTemplate(songsObject);
+                    $$('.lyrics-select').html(html);
+                }
+            });
+        });
+
+        $$('form.ajax-submit').on('submitted', function (e) {
+            let data = e.detail.data;
+            let t = $$('input[name=title]').val();
+            let s = $$('select[name=songs]').val();
+
             
+
+            DB.savePlaylists({title: t, songs: JSON.stringify(s)}, function(tx, playlists){
+                nhujaApp.alert("Playlist saved to database", "Successfully Saved", function(){
+                    console.log(playlists);
+                    nhujaApp.closeModal('.popup-playlist');
+                    nhujaApp.pullToRefreshTrigger('.pull-to-refresh-content');
+                });
+            });
+        });
+
+        $$(document).on('click','.open-lyrics', function () {
+            let target = $$(this).parent();
+            let album = target.find('[name=album]').val().replace(/\\/g, '');
+            let lang = target.find('[name=lang]').val().replace(/\\/g, '');
+
+            if(!album){
+                album = "N/A";
+            }
+
+            if( lang == "English" ){
+                lang = "EN";
+            }else if( lang == "Hindi" ){
+                lang = "IN";
+            }else if( lang == "Nepali" ){
+                lang = "NE";
+            }else{
+                lang = "";
+            }
+
+            let context = {
+                name: target.find('[name=name]').val().replace(/\\/g, ''),
+                artist: target.find('[name=artist]').val().replace(/\\/g, ''),
+                album: album,
+                scale: target.find('[name=scale]').val(),
+                lang: lang,
+                lyrics: target.find('[name=lyrics]').val().replace(/\\/g, '')
+            }
+            let popupHTML = $$('#popup-lyrics').html();
+            let compiledTemplate = Template7.compile(popupHTML);
+            let html = compiledTemplate(context);
+
+            nhujaApp.popup(html);
         });
     },
 

@@ -10,28 +10,109 @@
   <!-- Page, data-page contains page name-->
   	<div data-page="myplaylist" class="page">
 	    <!-- Scrollable page content-->
+	    <div class="playlist-view"></div>
 	    <script type="text/template7" id="myplaylist-template" >
 	    	<div class="page-content">
-		    	<div class="content-block-title" >{{title}}</div>
+		    	<div class="content-block-title" >{{playlist.title}}</div>
 		    </div>
-	    	{{#if playlist.songs}}
+	    	{{#if playlist.songs.total}}
 		    	<div class="list-block accordion-list">
-					<ul data-id="{{url_query.playlist_id}}" >
-					    {{#each playlist}}
+					<ul>
+					    {{#if playlist.songs.en}}
 						    <li class="accordion-item">
 						    	<a href="#" class="item-content item-link">
 						        	<div class="item-inner">
-						          		<div class="item-title">{{lang}}</div>
+						          		<div class="item-title">{{playlist.songs.en.lang}}</div>
 						        	</div>
 						        </a>
 						      	
 						      	<div class="accordion-item-content">
 						        	<div class="content-block">
-						          		<div class="main-content"></div>
+						          		<div class="data-table card song-list">
+							                <table>
+							                    <thead>
+							                        <tr>
+							                            <th class="numeric-cell">#</th>
+							                            <th class="label-cell">Title</th>
+							                            <th>Scale</th>
+							                            <th>Lang</th>
+							                        </tr>
+							                    </thead>
+							                    <tbody>
+							                        {{#each playlist.songs.en.songs}}
+							                            {{> "songsLoop"}}
+							                        {{/each}}
+							                    </tbody>
+							                </table>
+							            </div>
 						        	</div>
 						      	</div>
 						    </li>
-					    {{/each}}
+					    {{/if}}
+
+					    {{#if playlist.songs.in}}
+						    <li class="accordion-item">
+						    	<a href="#" class="item-content item-link">
+						        	<div class="item-inner">
+						          		<div class="item-title">{{playlist.songs.in.lang}}</div>
+						        	</div>
+						        </a>
+						      	
+						      	<div class="accordion-item-content">
+						        	<div class="content-block">
+						          		<div class="data-table card song-list">
+							                <table>
+							                    <thead>
+							                        <tr>
+							                            <th class="numeric-cell">#</th>
+							                            <th class="label-cell">Title</th>
+							                            <th>Scale</th>
+							                            <th>Lang</th>
+							                        </tr>
+							                    </thead>
+							                    <tbody>
+							                        {{#each playlist.songs.in.songs}}
+							                            {{> "songsLoop"}}
+							                        {{/each}}
+							                    </tbody>
+							                </table>
+							            </div>
+						        	</div>
+						      	</div>
+						    </li>
+					    {{/if}}
+
+					    {{#if playlist.songs.ne}}
+						    <li class="accordion-item">
+						    	<a href="#" class="item-content item-link">
+						        	<div class="item-inner">
+						          		<div class="item-title">{{playlist.songs.ne.lang}}</div>
+						        	</div>
+						        </a>
+						      	
+						      	<div class="accordion-item-content">
+						        	<div class="content-block">
+						          		<div class="data-table card song-list">
+							                <table>
+							                    <thead>
+							                        <tr>
+							                            <th class="numeric-cell">#</th>
+							                            <th class="label-cell">Title</th>
+							                            <th>Scale</th>
+							                            <th>Lang</th>
+							                        </tr>
+							                    </thead>
+							                    <tbody>
+							                        {{#each playlist.songs.ne.songs}}
+							                            {{> "songsLoop"}}
+							                        {{/each}}
+							                    </tbody>
+							                </table>
+							            </div>
+						        	</div>
+						      	</div>
+						    </li>
+					    {{/if}}
 				  	</ul>
 				</div>
 	        {{else}}

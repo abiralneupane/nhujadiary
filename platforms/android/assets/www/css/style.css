@@ -36,9 +36,34 @@ a.button, input[type=submit] {
     color: #fff;
 }
 
+.song-list{
+    margin: 0;
+}
+
 .song-list a {
-	color:#000;
-	text-decoration: underline;
+    color:#000;
+    text-decoration: underline;
+}
+
+.song-list td.label-cell, .song-list th.label-cell {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.song-list td, .song-list th {
+    padding: 0;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.song-list td:first-child, .song-list th:first-child {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.song-list td:last-child, .song-list th:last-child {
+    padding-right: 10px;
+    padding-left: 10px;
 }
 
 .pull-lyrics-wrapper{

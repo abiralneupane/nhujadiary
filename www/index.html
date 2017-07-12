@@ -151,21 +151,7 @@
                     </thead>
                     <tbody>
                         {{#each songs}}
-                        <tr>
-                            <td class="numeric-cell" >{{@index+1}}</td>
-                            <td class="label-cell" >
-                                <input type="hidden" name="name" value="{{name}}" />
-                                <input type="hidden" name="artist" value="{{artist}}" />
-                                <input type="hidden" name="album" value="{{album}}" />
-                                <input type="hidden" name="scale" value="{{base_chord}}" />
-                                <input type="hidden" name="lyrics" value="{{lyrics}}" />
-                                <input type="hidden" name="lang" value="{{lang}}" />
-
-                                <a href="#" class="open-lyrics">{{name}}</a>
-                            </td>
-                            <td>{{base_chord}}</td>
-                            <td>{{lang}}</td>
-                        </tr>
+                            {{> "songsLoop"}}
                         {{/each}}
                     </tbody>
                 </table>
@@ -215,6 +201,23 @@
 
             <div class="content-block lyrics-block">{{lyrics}}</div>
         </div>
+    </script>
+
+    <script id="songsLoop" type="text/template7">
+        <tr class="open-lyrics" >
+            <td class="numeric-cell" >{{@index+1}}</td>
+            <td class="label-cell" >
+                <input type="hidden" name="name" value="{{name}}" />
+                <input type="hidden" name="artist" value="{{artist}}" />
+                <input type="hidden" name="album" value="{{album}}" />
+                <input type="hidden" name="scale" value="{{base_chord}}" />
+                <input type="hidden" name="lyrics" value="{{lyrics}}" />
+                <input type="hidden" name="lang" value="{{lang}}" />
+                {{name}}
+            </td>
+            <td>{{base_chord}}</td>
+            <td>{{lang}}</td>
+        </tr>
     </script>
 
 
