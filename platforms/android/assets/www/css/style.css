@@ -87,6 +87,30 @@ a.button, input[type=submit] {
     z-index: 2;
 }
 
+.info-box {
+    margin: 0;
+    padding: 0;
+    background-image: url(../img/background.jpg);
+    background-size: contain;
+    height: 140px;
+    color: #fff;
+    text-align: center;
+    vertical-align: middle;
+    display: table;
+    width: 100%;
+}
+
+.info-box .content-block-inner {
+    padding: 0;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.info-box .content-block-inner > div {
+    background:rgba(0,0,0,0.3);
+    padding:10px;
+}
+
 .popup .heading {
     padding: 10px 10px 0;
     text-align: left;
@@ -111,4 +135,56 @@ a.button, input[type=submit] {
 .popup .lyrics-block{
 	margin-top: 10px;
 	overflow-y: scroll;
+}
+
+.icon-circle {
+    border: 1px solid #bdbdbd;
+    text-align: center;
+    border-radius: 100%;
+    width: 50px;
+    height: 50px;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.menu-icon .circle-orange{
+    background-color: #de8b10;
+    color: #fff;
+}
+
+.menu-icon .circle-blue{
+    background-color: #2196f3;
+    color: #fff;
+}
+
+
+.main-screen .row {
+    margin-bottom: 20px;
+}
+
+.main-screen .row h4 {
+    margin: 0;
+}
+
+.main-screen .row p {
+    margin: 5px 0 0;
+}
+
+.col-75 .menu-description {
+    background: #f5ecec;
+    padding: 10px;
+    border-radius: 5px;
+    border: solid 1px #f5ecec;
+}
+
+.pointer{
+    border: solid 10px transparent;
+    border-right-color: #f5ecec;
+    position: absolute;
+    margin: -59px 0 0 -20px;
+}
+
+.col-25.menu-icon {
+    top: 15px;
+    position: relative;
 }

@@ -17,7 +17,7 @@
     <!-- Path to your custom app styles-->
     <link rel="stylesheet" type="text/css" href="css/style.css" />
   </head>
-  <body class="theme-orange">
+  <body>
     <div class="statusbar-overlay"></div>
     <div class="panel-overlay"></div>
    
@@ -38,44 +38,65 @@
               <!-- Page, data-page contains page name-->
               <div data-page="index" class="page">
                 <!-- Scrollable page content-->
-                <div class="page-content" >  
-                    <div class="info-box content-block">
-                        <div class="content-block-inner">
-                            <div>Where words fades, music speaks</div>
-                        </div>
+                <div class="page-content pull-to-refresh-content" data-ptr-distance="55" >  
+                    <div class="pull-to-refresh-layer">
+                        <div class="preloader"></div>
+                        <div class="pull-to-refresh-arrow"></div>
                     </div>
 
-                    <div class="content-block main-screen">
-
-                        <div class="row">
-                            <div class="col-25 menu-icon">
-                                <a href="songs.html" class="icon-circle circle-orange item-link ripple-red" ><i class="f7-icons">tune</i></a>
-                            </div>
-                            
-                            <div class="col-75">
-                                <div class="menu-description">
-                                    <h4>My Songs</h4><p>It has all the songs that we have sung over the history</p>
-                                </div>
-                                <div class="pointer"></div>
-                            </div>
-
-                        </div>
-
-                        <div class="row">
-                            <div class="col-25 menu-icon">
-                                <a href="playlists.html" class="icon-circle circle-blue ripple item-link"><i class="f7-icons">albums</i></a>
-                            </div>
-                            <div class="col-75">
-                                <div class="menu-description">
-                                    <h4>My Playlists</h4><p>See the group of songs or create one for the program</p>
-                                </div>
-                                <div class="pointer"></div>
-                            </div>
-                        </div>
-
+                    <div class="list-block">
+                        <ul>
+                            <li>
+                                <a href="songs.html" class="item-link">
+                                    <div class="item-content">
+                                        <div class="item-inner"> 
+                                            <div class="item-title">Songs</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
+
+                    <div class="content-block-title">My Playlists <a href="#" data-popup=".popup-playlist" class="open-popup" ><i class="f7-icons size-16">add_round</i></a></div>  
+                    
+                    <div class="playlist-block"></div>
+
                 </div>
               </div>
+            </div>
+        
+            <div class="popup popup-playlist">
+                <div class="content-block">
+                    <div class="content-block-title">Create New Playlist</div>  
+                    <form action="." id="playlist-form" method="GET" class="list-block ajax-submit" >
+                        <ul>
+                            <li>
+                                <div class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title label">Title</div>
+                                        <div class="item-input">
+                                            <input type="text" name="title" placeholder="Playlist Title">
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li>
+                                <div class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title label">Songs</div>
+                                        <div class="lyrics-select"></div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <p><input type="submit" class="button" value="Create" /></p>
+                        <p><a href="#" class="button close-popup">Close</a></p>
+
+                    </form>
+                </div>
             </div>
         </div>
     </div>

@@ -35,16 +35,20 @@ var app = {
         DB.init();
 
         console.log("This is index page");
-        self.__fetchPlaylist($$);
+        Template7.registerPartial( 'songsLoop', $$('#songsLoop').html() );
 
-        let ptrContent = $$('.pull-to-refresh-content');
-        ptrContent.on('ptr:refresh', function (e) {
-            self.__fetchPlaylist($$, function(){
-                nhujaApp.pullToRefreshDone(ptrContent);
+        nhujaApp.onPageInit('playlists', function (page) {
+            var self = app;
+            console.log(self);
+            self.__fetchPlaylist($$);
+
+            let ptrContent = $$('.pull-to-refresh-content');
+            ptrContent.on('ptr:refresh', function (e) {
+                self.__fetchPlaylist($$, function(){
+                    nhujaApp.pullToRefreshDone(ptrContent);
+                });
             });
         });
-
-        Template7.registerPartial( 'songsLoop', $$('#songsLoop').html() );
 
         nhujaApp.onPageInit('songs', function (page) {
             let self = app;
