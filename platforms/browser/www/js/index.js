@@ -34,7 +34,6 @@ var app = {
 
         DB.init();
 
-        console.log("This is index page");
         Template7.registerPartial( 'songsLoop', $$('#songsLoop').html() );
 
         nhujaApp.onPageInit('playlists', function (page) {
@@ -47,6 +46,30 @@ var app = {
                 self.__fetchPlaylist($$, function(){
                     nhujaApp.pullToRefreshDone(ptrContent);
                 });
+            });
+
+            $$('.popup-playlist').on('popup:open', function () {
+                let popup = this;
+
+                let songSelector = $$('#song-selector').html();
+                let compiledTemplate = Template7.compile(songSelector);
+                let songsObject = { songs: [] };
+
+                DB.getSong(function(tx, songs){
+                    if(typeof songs.rows != "undefined"  && songs.rows.length > 0){
+
+                        for(let i=0; i<songs.rows.length; i++){
+                            songsObject.songs.push(songs.rows[i]);
+                        }
+
+                        let html = compiledTemplate(songsObject);
+                        $$('.lyrics-select').html(html);
+                    }
+                });
+
+                document.addEventListener("backbutton", function(){
+                    nhujaApp.closeModal(popup);
+                }, false);
             });
         });
 
@@ -160,24 +183,6 @@ var app = {
             });
         });
 
-        $$('.popup-playlist').on('popup:open', function () {
-            let songSelector = $$('#song-selector').html();
-            let compiledTemplate = Template7.compile(songSelector);
-            let songsObject = { songs: [] };
-
-            DB.getSong(function(tx, songs){
-                if(typeof songs.rows != "undefined"  && songs.rows.length > 0){
-
-                    for(let i=0; i<songs.rows.length; i++){
-                        songsObject.songs.push(songs.rows[i]);
-                    }
-
-                    let html = compiledTemplate(songsObject);
-                    $$('.lyrics-select').html(html);
-                }
-            });
-        });
-
         $$('form.ajax-submit').on('submitted', function (e) {
             let data = e.detail.data;
             let t = $$('input[name=title]').val();
@@ -225,7 +230,11 @@ var app = {
             let compiledTemplate = Template7.compile(popupHTML);
             let html = compiledTemplate(context);
 
-            nhujaApp.popup(html);
+            var popup = nhujaApp.popup(html);
+
+            document.addEventListener("backbutton", function(){
+                nhujaApp.closeModal(popup);
+            }, false);
         });
     },
 

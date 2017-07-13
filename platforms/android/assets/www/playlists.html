@@ -17,7 +17,40 @@
 	    	<div class="content-block-title">My Playlists <a href="#" data-popup=".popup-playlist" class="open-popup" ><i class="f7-icons size-16">add_round</i></a></div>  
                     
             <div class="playlist-block"></div>
-            
+
 	    </div>
+
+	    <div class="popup popup-playlist">
+            <div class="content-block">
+                <div class="content-block-title">Create New Playlist</div>  
+                <form action="." id="playlist-form" method="GET" class="list-block ajax-submit" >
+                    <ul>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label">Title</div>
+                                    <div class="item-input">
+                                        <input type="text" name="title" placeholder="Playlist Title">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label">Songs</div>
+                                    <div class="lyrics-select"></div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <p><input type="submit" class="button button-fill" value="Create" /></p>
+                    <p><a href="#" class="button close-popup">Close</a></p>
+
+                </form>
+            </div>
+        </div>
   	</div>
 </div>
