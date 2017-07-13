@@ -137,6 +137,10 @@ a.button, input[type=submit] {
 	overflow-y: scroll;
 }
 
+.main-content .song-list{
+    overflow:scroll;
+}
+
 .icon-circle {
     border: 1px solid #bdbdbd;
     text-align: center;
