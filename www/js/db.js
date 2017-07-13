@@ -85,6 +85,8 @@ var DB = {
 
                     }, self.errorCB );
 
+                }else{
+                    cb(playlistObj);
                 }
             }, self.errorCB );
         }, self.errorCB, function(tx){});
@@ -96,6 +98,13 @@ var DB = {
         self.db.transaction( function(tx){
             let query = "INSERT INTO playlist(title, songs) VALUES ( '"+playlistData.title+"', '"+playlistData.songs+"')";
             tx.executeSql(query, [], cb, self.errorCB );
+        }, self.errorCB, function(tx){});
+    },
+
+    deletePlaylists: function(id, cb){
+        var self = this;
+        self.db.transaction( function(tx){
+            tx.executeSql( 'DELETE FROM playlist WHERE id='+id, [], cb, self.errorCB );
         }, self.errorCB, function(tx){});
     },
 

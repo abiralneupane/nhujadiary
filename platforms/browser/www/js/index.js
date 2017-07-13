@@ -5,22 +5,17 @@ var app = {
         this.bindEvents();
     },
     
-    // Bind Event Listeners
-    //
-    // Bind any events that are required on startup. Common events are:
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
     },
-    // deviceready Event Handler
-    //
+    
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
     },
 
-    // Update DOM on a Received Event
     receivedEvent: function(id) {
         var self = this;
 
@@ -67,10 +62,28 @@ var app = {
                     }
                 });
 
+                console.log("Popup Opened");
+
                 document.addEventListener("backbutton", function(){
                     nhujaApp.closeModal(popup);
                 }, false);
             });
+
+            $$('form.ajax-submit').on('submitted', function (e) {
+                console.log("yes");
+                let data = e.detail.data;
+                let t = $$('input[name=title]').val();
+                let s = $$('select[name=songs]').val();
+
+                DB.savePlaylists({title: t, songs: JSON.stringify(s)}, function(tx, playlists){
+                    nhujaApp.alert("Playlist saved to database", "Successfully Saved", function(){
+                        console.log(playlists);
+                        nhujaApp.closeModal('.popup-playlist');
+                        nhujaApp.pullToRefreshTrigger('.pull-to-refresh-content');
+                    });
+                });
+            });
+
         });
 
         nhujaApp.onPageInit('songs', function (page) {
@@ -148,6 +161,8 @@ var app = {
                 playlistObj.id = playlist.id;
                 playlistObj.title = playlist.title;
 
+                $$('#playlist-header > span').text(playlist.title);
+
                 if( typeof playlist.songs != "undefined" && playlist.songs.length > 0 ){
                     for(let i = 0; i< playlist.songs.length; i++ ){
                         
@@ -175,29 +190,23 @@ var app = {
                    delete playlistObj.songs.ne
                 }
 
-                console.log(playlistObj);
                 let myPlaylistTemplate = $$('#myplaylist-template').html();
                 let compiledTemplate = Template7.compile(myPlaylistTemplate);
                 let html = compiledTemplate({ playlist: playlistObj });
                 $$('.playlist-view').html(html);
             });
-        });
 
-        $$('form.ajax-submit').on('submitted', function (e) {
-            let data = e.detail.data;
-            let t = $$('input[name=title]').val();
-            let s = $$('select[name=songs]').val();
-
-            
-
-            DB.savePlaylists({title: t, songs: JSON.stringify(s)}, function(tx, playlists){
-                nhujaApp.alert("Playlist saved to database", "Successfully Saved", function(){
-                    console.log(playlists);
-                    nhujaApp.closeModal('.popup-playlist');
-                    nhujaApp.pullToRefreshTrigger('.pull-to-refresh-content');
+            $$(document).on('click','.delete-playlist', function () {
+                nhujaApp.confirm('Are you sure?', function () {
+                    DB.deletePlaylists(id, function(response){
+                        nhujaApp.alert('The playlist is now removed', 'Successfull');
+                        mainView.router.reloadPage("playlists.html");
+                    });
                 });
             });
         });
+
+       
 
         $$(document).on('click','.open-lyrics', function () {
             let target = $$(this);
@@ -306,7 +315,6 @@ var app = {
             callback();
         });
     }
-
 
 };
 
