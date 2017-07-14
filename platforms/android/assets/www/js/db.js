@@ -19,7 +19,6 @@ var DB = {
 	setupDatabase: function(){
 		var self = this;
 		self.db.transaction( self.populateDB, self.errorCB, function(){
-			console.log("Database installed");
         } );
 	},
 

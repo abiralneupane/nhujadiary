@@ -91,7 +91,8 @@ a.button, input[type=submit] {
     margin: 0;
     padding: 0;
     background-image: url(../img/background.jpg);
-    background-size: contain;
+    background-size: cover;
+    background-repeat: no-repeat;
     height: 140px;
     color: #fff;
     text-align: center;
@@ -109,6 +110,10 @@ a.button, input[type=submit] {
 .info-box .content-block-inner > div {
     background:rgba(0,0,0,0.3);
     padding:10px;
+}
+
+.accordion-item .accordion-item-content .content-block{
+    padding:0;
 }
 
 .popup .heading {

@@ -33,7 +33,6 @@ var app = {
 
         nhujaApp.onPageInit('playlists', function (page) {
             var self = app;
-            console.log(self);
             self.__fetchPlaylist($$);
 
             let ptrContent = $$('.pull-to-refresh-content');
@@ -62,29 +61,35 @@ var app = {
                     }
                 });
 
-                console.log("Popup Opened");
-
                 document.addEventListener("backbutton", function(){
                     nhujaApp.closeModal(popup);
                 }, false);
             });
 
             $$('form.ajax-submit').on('submitted', function (e) {
-                console.log("yes");
                 let data = e.detail.data;
                 let t = $$('input[name=title]').val();
                 let s = $$('select[name=songs]').val();
 
                 DB.savePlaylists({title: t, songs: JSON.stringify(s)}, function(tx, playlists){
                     nhujaApp.alert("Playlist saved to database", "Successfully Saved", function(){
-                        console.log(playlists);
                         nhujaApp.closeModal('.popup-playlist');
                         nhujaApp.pullToRefreshTrigger('.pull-to-refresh-content');
                     });
                 });
             });
 
+            document.addEventListener("backbutton", function(){
+                mainView.router.reloadPage("index.html");
+            }, false);
         });
+
+        document.addEventListener("backbutton", function(){
+            nhujaApp.confirm('You sure want to exit?','Nhuja Diary', function () {
+                navigator.app.exitApp();
+            });
+
+        }, false);
 
         nhujaApp.onPageInit('songs', function (page) {
             let self = app;
@@ -131,6 +136,10 @@ var app = {
                     }
                 });
             });
+
+            document.addEventListener("backbutton", function(){
+                mainView.router.reloadPage("index.html");
+            }, false);
         });
 
         nhujaApp.onPageInit('myplaylist', function (page) {
@@ -197,13 +206,17 @@ var app = {
             });
 
             $$(document).on('click','.delete-playlist', function () {
-                nhujaApp.confirm('Are you sure?', function () {
+                nhujaApp.confirm('Are you sure?','Nhuja Diary', function () {
                     DB.deletePlaylists(id, function(response){
-                        nhujaApp.alert('The playlist is now removed', 'Successfull');
+                        nhujaApp.alert('The playlist is now removed','Nhuja Diary', 'Successfull');
                         mainView.router.reloadPage("playlists.html");
                     });
                 });
             });
+
+            document.addEventListener("backbutton", function(){
+                mainView.router.reloadPage("playlists.html");
+            }, false);
         });
 
        
