@@ -14,8 +14,10 @@
     <!-- Path to Framework7 color related styles, Material Theme -->
     <link rel="stylesheet" href="css/framework7.material.colors.min.css" />
     <link rel="stylesheet" href="css/framework7-icons.css" />
-    <!-- Path to your custom app styles-->
+    
+    <!-- Path to your custom app styles -->
     <link rel="stylesheet" type="text/css" href="css/style.css" />
+
   </head>
   <body class="theme-orange">
     <div class="statusbar-overlay"></div>
@@ -25,18 +27,18 @@
     <div class="views">
         <!-- Your main view, should have "view-main" class-->
         <div class="view view-main">
-            <!-- Top Navbar-->
-            <div class="navbar main-nav">
-                <div class="navbar-inner">
-                    <!-- We have home navbar without left link-->
-                    <div class="center sliding"  style="text-align: center;width: 100%;" >Nhuja Diary</div>
-                </div>
-            </div>
-
             <!-- Pages, because we need fixed-through navbar and toolbar, it has additional appropriate classes-->
-            <div class="pages navbar-through toolbar-through">
+            <div class="pages navbar-fixed toolbar-through">
               <!-- Page, data-page contains page name-->
               <div data-page="index" class="page">
+                <!-- Top Navbar-->
+                <div class="navbar main-nav">
+                    <div class="navbar-inner">
+                        <!-- We have home navbar without left link-->
+                        <div class="center sliding">Nhuja Diary</div>
+                    </div>
+                </div>
+
                 <!-- Scrollable page content-->
                 <div class="page-content" >  
                     <div class="info-box content-block">
@@ -46,7 +48,7 @@
                     </div>
 
                     <div class="content-block main-screen">
-
+                        
                         <div class="row">
                             <div class="col-25 menu-icon">
                                 <a href="songs.html" class="icon-circle circle-orange item-link ripple-red" ><i class="f7-icons">tune</i></a>
@@ -54,7 +56,7 @@
                             
                             <div class="col-75">
                                 <div class="menu-description">
-                                    <h4>My Songs</h4><p>It has all the songs that we have sung over the history</p>
+                                    <h4>Songs Book</h4><p>It has all the songs that we have sung over the history</p>
                                 </div>
                                 <div class="pointer"></div>
                             </div>
@@ -81,13 +83,22 @@
     </div>
 
 
-    <script id="song-selector" type="text/template7" >
+    <script id="song-selector" type="text/template7" > <!-- We might not need this -->
         <div class="item-input">
-            <select name="songs" multiple >
-                {{#each songs}}
-                    <option value="{{id}}">{{name}} ({{lang}})</option>
-                {{/each}}
-            </select>
+            <a href="#" class="item-link song-list smart-select">
+                <select name="songs" multiple >
+                    {{#each songs}}
+                        <option value="{{id}}">{{name}} ({{lang}})</option>
+                    {{/each}}
+                </select>
+
+                <div class="item-content">
+                  <div class="item-inner song-smartselect-opener">
+                    <!-- Select label -->
+                    <div class="item-title">Songs</div>
+                  </div>
+                </div>
+            </a>
         </div>
     </script>
 

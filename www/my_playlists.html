@@ -1,21 +1,20 @@
-
-<!-- We don't need full layout here, because this page will be parsed with Ajax-->
-<!-- Top Navbar-->
-<div class="navbar" >
-  <div class="navbar-inner">
-    <div class="left"><a href="#" class="back link"><i class="f7-icons icon-white">left</i></a></div>
-    <div class="center" id="playlist-header" style="width: 100%;" >Playlist: <span></span></div>
-    <div class="right" style="right: 12px;position: relative;top: 1px;">
-    	<a href="#" class="delete-playlist" style="margin-right: 6px;" ><i class="f7-icons icon-white">delete_round</i></a>
-    	<a href="#" class="edit-playlist" ><i class="f7-icons icon-white">info</i></a>
-    </div>
-  </div>
-</div>
 <div class="pages">
   <!-- Page, data-page contains page name-->
   	<div data-page="myplaylist" class="page">
+  		<div class="navbar">
+			<div class="navbar-inner">
+		    	<div class="left"><a href="#" class="back link"> <i class="f7-icons icon-white">left</i></a></div>
+		    	<div class="center sliding" id="playlist-header">Playlist: <span></span></div>
+		    	<div class="right" >
+			    	<a href="#" class="delete-playlist" style="margin-right: 6px;" ><i class="f7-icons icon-white">delete_round</i></a>
+			    	<a href="#" class="edit-playlist" ><i class="f7-icons icon-white">info</i></a>
+			    </div>
+		  	</div>
+		</div>
+
 	    <!-- Scrollable page content-->
 	    <div class="playlist-view"></div>
+	    
 	    <script type="text/template7" id="myplaylist-template" >
 	    	<div class="page-content">
 		    	<div class="content-block-title" >{{playlist.title}}</div>

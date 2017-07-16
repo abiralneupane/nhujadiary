@@ -1,0 +1,51 @@
+<div class="pages">
+  	<div data-page="addplaylist" class="page">
+      
+      <div class="navbar">
+        <div class="navbar-inner">
+            <div class="left"><a href="#" class="back link"> <i class="f7-icons icon-white">left</i></a></div>
+            <div class="center sliding" >Create new playlist</div>
+            <div class="right"></div>
+          </div>
+      </div>
+
+	    <div class="page-content">                    
+            <div class="content-block">
+                <form action="." id="playlist-form" method="GET" class="list-block ajax-submit" >
+                    <ul>
+                        <li>
+                            <div class="item-content">
+                              <div class="item-inner">
+                                <div class="item-title label">Titles</div>
+                                <div class="item-input">
+                                  <input type="text" name="title" placeholder="Playlist Title">
+                                </div>
+                              </div>
+                            </div>
+                        </li>
+
+                        <li>
+                             <a href="#" class="item-link song-list smart-select" data-searchbar="true" data-searchbar-placeholder="Search Song" data-page-title=" " data-back-text="Songs" >
+                                <select name="songs" multiple >
+                                   <optgroup label="Nepali" class="ne" ></optgroup>
+                                   <optgroup label="Hindi" class="in" ></optgroup>
+                                   <optgroup label="English" class="en"></optgroup>
+                                </select>
+
+                                <div class="item-content">
+                                  <div class="item-inner">
+                                    <div class="item-title">Songs</div>
+                                  </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <p><input type="submit" class="button button-fill" value="Create" /></p>
+                </form>
+            </div>
+
+	    </div>
+
+  	</div>
+</div>

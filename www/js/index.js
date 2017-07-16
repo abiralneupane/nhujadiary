@@ -19,80 +19,50 @@ var app = {
     receivedEvent: function(id) {
         var self = this;
 
-        var nhujaApp = new Framework7();
-        
+        var currentPage = "index";
+
+        var popup = null;
+
         var $$ = Dom7;
 
-        var mainView = nhujaApp.addView('.view-main', {
-            dynamicNavbar: true
+        var nhujaApp = new Framework7({
+            animateNavBackIcon:true
         });
 
+        var mainView = nhujaApp.addView('.view-main');
+        
         DB.init();
 
         Template7.registerPartial( 'songsLoop', $$('#songsLoop').html() );
 
-        nhujaApp.onPageInit('playlists', function (page) {
-            var self = app;
-            self.__fetchPlaylist($$);
-
-            let ptrContent = $$('.pull-to-refresh-content');
-            ptrContent.on('ptr:refresh', function (e) {
-                self.__fetchPlaylist($$, function(){
-                    nhujaApp.pullToRefreshDone(ptrContent);
-                });
-            });
-
-            $$('.popup-playlist').on('popup:open', function () {
-                let popup = this;
-
-                let songSelector = $$('#song-selector').html();
-                let compiledTemplate = Template7.compile(songSelector);
-                let songsObject = { songs: [] };
-
-                DB.getSong(function(tx, songs){
-                    if(typeof songs.rows != "undefined"  && songs.rows.length > 0){
-
-                        for(let i=0; i<songs.rows.length; i++){
-                            songsObject.songs.push(songs.rows[i]);
-                        }
-
-                        let html = compiledTemplate(songsObject);
-                        $$('.lyrics-select').html(html);
-                    }
-                });
-
-                document.addEventListener("backbutton", function(){
-                    nhujaApp.closeModal(popup);
-                }, false);
-            });
-
-            $$('form.ajax-submit').on('submitted', function (e) {
-                let data = e.detail.data;
-                let t = $$('input[name=title]').val();
-                let s = $$('select[name=songs]').val();
-
-                DB.savePlaylists({title: t, songs: JSON.stringify(s)}, function(tx, playlists){
-                    nhujaApp.alert("Playlist saved to database", "Successfully Saved", function(){
-                        nhujaApp.closeModal('.popup-playlist');
-                        nhujaApp.pullToRefreshTrigger('.pull-to-refresh-content');
-                    });
-                });
-            });
-
-            document.addEventListener("backbutton", function(){
-                mainView.router.reloadPage("index.html");
-            }, false);
-        });
 
         document.addEventListener("backbutton", function(){
-            nhujaApp.confirm('You sure want to exit?','Nhuja Diary', function () {
-                navigator.app.exitApp();
-            });
+            
+            if(popup != null){
+                
+                nhujaApp.closeModal(popup);
+                popup = null;
 
+            }else{
+
+               if( currentPage == "songs" || currentPage == "playlists" ){
+                    mainView.router.reloadPage("index.html");
+                    currentPage = "";
+                }else if( currentPage == "myplaylist" || currentPage == "addplaylist" ){
+                    mainView.router.reloadPage("playlists.html");
+                }else{
+                    nhujaApp.confirm('You sure want to exit?','Nhuja Diary', function () {
+                        navigator.app.exitApp();
+                    });
+                } 
+            }
         }, false);
+
 
         nhujaApp.onPageInit('songs', function (page) {
             let self = app;
+            
+            currentPage = 'songs';
 
             let ptrContent = $$('.pull-to-refresh-content');
 
@@ -112,7 +82,7 @@ var app = {
                     beforeSend: function(xhr){ 
                         pullBtn.hide();
                         pullBtn.parent().append('<span class="preloader preloader-white"></span>');
-                        nhujaApp.showPreloader();
+                        nhujaApp.showIndicator();
                     },
                     statusCode: {
                         200: function (xhr) {
@@ -127,7 +97,7 @@ var app = {
                                 }
                             }
                             pullBtn.parent().find('.preloader').remove();
-                            nhujaApp.hidePreloader();
+                            nhujaApp.hideIndicator();
                             pullBtn.show();
                             DB.saveLyrics(SQLString,function(tx, songs){
                                 nhujaApp.alert( 'Lyrics fetched successfully. Pull screen to refresh the lists', 'Success');
@@ -137,13 +107,69 @@ var app = {
                 });
             });
 
-            document.addEventListener("backbutton", function(){
+            /*document.addEventListener("backbutton", function(){
                 mainView.router.reloadPage("index.html");
-            }, false);
+            }, false);*/
         });
 
+        nhujaApp.onPageInit('playlists', function (page) {
+            var self = app;
+            currentPage = 'playlists';
+
+            self.__fetchPlaylist($$);
+
+            let ptrContent = $$('.pull-to-refresh-content');
+            ptrContent.on('ptr:refresh', function (e) {
+                self.__fetchPlaylist($$, function(){
+                    nhujaApp.pullToRefreshDone(ptrContent);
+                });
+            });
+
+        });
+
+        nhujaApp.onPageInit('addplaylist', function (page) {
+            var self = app;
+            currentPage = 'addplaylist';
+
+            
+            DB.getSong(function(tx, songs){
+                if(typeof songs.rows != "undefined"  && songs.rows.length > 0){
+                    let selector = "";
+                    for(let i=0; i<songs.rows.length; i++){
+                        if( songs.rows[i].lang == "English" ){
+                            selector = ".smart-select select optgroup.en";
+                        }else if( songs.rows[i].lang == "Hindi" ){
+                            selector = ".smart-select select optgroup.in";
+                        }else if( songs.rows[i].lang == "Nepali" ){
+                            selector = ".smart-select select optgroup.ne";
+                        }
+                        
+                        nhujaApp.smartSelectAddOption(selector, '<option value="'+songs.rows[i].id+'">'+songs.rows[i].name+'</option>');
+                    }
+               }
+
+                console.log(playlistPopupView);
+            });
+
+            $$('form.ajax-submit').on('submitted', function (e) {
+                let data = e.detail.data;
+                let t = $$('input[name=title]').val();
+                let s = $$('select[name=songs]').val();
+
+                DB.savePlaylists({title: t, songs: JSON.stringify(s)}, function(tx, playlists){
+                    nhujaApp.alert("Playlist saved to database", "Successfully Saved", function(){
+                        mainView.router.reloadPage("playlists.html");
+                    });
+                });
+            });
+        });
+
+        
         nhujaApp.onPageInit('myplaylist', function (page) {
             let self = app;
+            
+            currentPage = 'myplaylist';
+
             let id = page.query.playlist_id;
             let playlistObj = {
                 id: '',
@@ -208,21 +234,19 @@ var app = {
             $$(document).on('click','.delete-playlist', function () {
                 nhujaApp.confirm('Are you sure?','Nhuja Diary', function () {
                     DB.deletePlaylists(id, function(response){
-                        nhujaApp.alert('The playlist is now removed','Nhuja Diary', 'Successfull');
                         mainView.router.reloadPage("playlists.html");
                     });
                 });
             });
 
-            document.addEventListener("backbutton", function(){
+            /*document.addEventListener("backbutton", function(){
                 mainView.router.reloadPage("playlists.html");
-            }, false);
+            }, false);*/
         });
-
-       
 
         $$(document).on('click','.open-lyrics', function () {
             let target = $$(this);
+
             let album = target.find('[name=album]').val().replace(/\\/g, '');
             let lang = target.find('[name=lang]').val().replace(/\\/g, '');
 
@@ -252,12 +276,13 @@ var app = {
             let compiledTemplate = Template7.compile(popupHTML);
             let html = compiledTemplate(context);
 
-            var popup = nhujaApp.popup(html);
+            popup = nhujaApp.popup(html);
 
-            document.addEventListener("backbutton", function(){
+            /*document.addEventListener("backbutton", function(){
                 nhujaApp.closeModal(popup);
-            }, false);
+            }, false);*/
         });
+
     },
 
     __fetchPlaylist: function($$, callback){
