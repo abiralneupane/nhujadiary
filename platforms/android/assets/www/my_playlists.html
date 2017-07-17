@@ -5,9 +5,9 @@
 			<div class="navbar-inner">
 		    	<div class="left"><a href="#" class="back link"> <i class="f7-icons icon-white">left</i></a></div>
 		    	<div class="center sliding" id="playlist-header">Playlist: <span></span></div>
-		    	<div class="right" >
+		    	<div class="right playlist-actions" >
 			    	<a href="#" class="delete-playlist" style="margin-right: 6px;" ><i class="f7-icons icon-white">delete_round</i></a>
-			    	<a href="#" class="edit-playlist" ><i class="f7-icons icon-white">info</i></a>
+			    	
 			    </div>
 		  	</div>
 		</div>
@@ -125,6 +125,10 @@
 	                <span>You don't have any songs in this playlist.</span>
 	            </div>
 	        {{/if}}  
-	    </script>     	
+	    </script>
+
+	    <script type="text/template7" id="playlist-action-template">
+	    	<a href="playlist-add.html?id={{id}}" class="edit-playlist" ><i class="f7-icons icon-white">info</i></a>
+	    </script> 	
   	</div>
 </div>

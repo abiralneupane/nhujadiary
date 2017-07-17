@@ -171,6 +171,11 @@ var app = {
             currentPage = 'myplaylist';
 
             let id = page.query.playlist_id;
+
+            let compiledActionTemplate = Template7.compile($$('#playlist-action-template').html());
+            let html = compiledActionTemplate({ id: id });
+            $$('.playlist-actions').append(html);
+
             let playlistObj = {
                 id: '',
                 title: '',
